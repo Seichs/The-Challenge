@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #A9FF82;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.HomeJava">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label fx:id="welcomeText" />
+
+    <!-- Button 1 with an ImageView -->
+    <Button onAction="#KlikKassen" style="-fx-background-color: #FFFFFF;">
+        <graphic>
+            <ImageView fx:id="buttonImage1" fitHeight="100.0" fitWidth="100.0" />
+        </graphic>
+    </Button>
+
+    <!-- Button 2 with a different ImageView -->
+    <Button onAction="#KlikOnsPlan" style="-fx-background-color: #FFFFFF;">
+        <graphic>
+            <ImageView fx:id="buttonImage2" fitHeight="100.0" fitWidth="100.0" />
+        </graphic>
+    </Button>
+
+    <!-- Button 3 with another ImageView -->
+    <Button onAction="#KlikOverOns" style="-fx-background-color: #FFFFFF;">
+        <graphic>
+            <ImageView fx:id="buttonImage3" fitHeight="100.0" fitWidth="100.0" />
+        </graphic>
+    </Button>
+
+    <!-- Button 4 with another ImageView -->
+    <Button onAction="#KlikGroeiTips" style="-fx-background-color: #FFFFFF;">
+        <graphic>
+            <ImageView fx:id="buttonImage4" fitHeight="100.0" fitWidth="100.0" />
+        </graphic>
+    </Button>
+
+</VBox>
