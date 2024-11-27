@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane prefHeight="620.0" prefWidth="424.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.KassenPage">
+    <children>
+        <Pane prefHeight="105.0" prefWidth="424.0" style="-fx-background-color: #A9FF82;">
+            <children>
+                <Label alignment="CENTER" layoutX="98.0" layoutY="15.0" prefHeight="75.0" prefWidth="229.0" text="Ons plan" textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="52.0" />
+                    </font>
+                </Label>
+                <Button fx:id="goBackButton" layoutX="182.0" layoutY="308.0" text="Ga terug" />
+                <Pane layoutY="98.0" prefHeight="10.0" prefWidth="424.0" style="-fx-background-color: #86FF4F;" />
+            </children>
+        </Pane>
+    </children>
+</Pane>
