@@ -3,6 +3,7 @@ module com.example.app {
     requires javafx.fxml;
 
 
-    opens com.example.app to javafx.fxml;
-    exports com.example.app;
+    opens com.example.app.PageUIDesign to javafx.fxml;
+    exports com.example.app.Page;
+    opens com.example.app.Page to javafx.fxml;
 }

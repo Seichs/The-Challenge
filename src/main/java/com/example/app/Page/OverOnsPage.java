@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.Page;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,7 +21,7 @@ public class OverOnsPage {
     private void goBackToHomePage() {
         try {
             // Load the HomePage.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/HomePage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/Page%20UI%20Design/HomePage.fxml"));
             Parent root = loader.load();
 
             // Get the current stage (from the goBackButton's scene)

@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.Page;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

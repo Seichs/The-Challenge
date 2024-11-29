@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.Page;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 
-public class KassenPage {
+public class GroeiTipsPage {
 
     @FXML
     private Button goBackButton;
@@ -21,7 +21,7 @@ public class KassenPage {
     private void goBackToHomePage() {
         try {
             // Load the HomePage.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/HomePage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
             Parent root = loader.load();
 
             // Get the current stage (from the goBackButton's scene)
@@ -32,7 +32,7 @@ public class KassenPage {
             stage.setScene(scene);
 
             // Set the stage title
-            stage.setTitle("My Application");
+            stage.setTitle("Groei Tips");
 
             // Show the stage
             stage.show();

@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.Page;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ public class LogicaApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // Load the FXML for the Home Page
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/app/HomePage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
 
         // Set the Scene
         Scene scene = new Scene(root);

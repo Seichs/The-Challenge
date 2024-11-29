@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.Page;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,21 +67,21 @@ public class HomePage {
 
     @FXML
     protected void KlikKassen(ActionEvent event) {
-        switchScene(event, "/com/example/app/KassenPage.fxml", "Kassen");
+        switchScene(event, "/com/example/app/PageUIDesign/KassenPage.fxml", "Kassen");
     }
     @FXML
     protected void KlikOnsPlan(ActionEvent event) {
         // Update the label text when a button is clicked
-        switchScene(event, "/com/example/app/OnsPlanPage.fxml", "Ons plan");
+        switchScene(event, "/com/example/app/PageUIDesign/OnsPlanPage.fxml", "Ons plan");
     }
     @FXML
     protected void KlikOverOns(ActionEvent event) {
         // Update the label text when a button is clicked
-        switchScene(event, "/com/example/app/OverOnsPage.fxml", "Over ons");
+        switchScene(event, "/com/example/app/PageUIDesign/OverOnsPage.fxml", "Over ons");
     }
     @FXML
     protected void KlikGroeiTips(ActionEvent event) {
         // Update the label text when a button is clicked
-        switchScene(event, "/com/example/app/GroeiTipsPage.fxml", "Over ons");
+        switchScene(event, "/com/example/app/PageUIDesign/GroeiTipsPage.fxml", "Over ons");
     }
 }
