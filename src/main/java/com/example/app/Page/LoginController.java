@@ -51,7 +51,7 @@ public class LoginController {
                     // Get the current stage (window) and set the new scene
                     Stage currentStage = (Stage) rootPane.getScene().getWindow();
                     currentStage.setScene(homeScene);
-                    currentStage.setTitle("Home - Smart Novme");
+                    currentStage.setTitle("Home - SmartGreenHouse");
 
                     // Apply a fade-in animation to the HomePage
                     FadeTransition fadeIn = new FadeTransition(Duration.millis(500), homeRoot);

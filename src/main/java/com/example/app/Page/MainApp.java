@@ -16,7 +16,7 @@ public class MainApp extends Application {
         FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/com/example/app/PageUIDesign/LoginView.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("Login - Smart Novme");
+        stage.setTitle("Login - SmartGreenHouse");
         stage.show();
     }
 
@@ -24,7 +24,7 @@ public class MainApp extends Application {
         FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("Smart Novme");
+        stage.setTitle("SmartGreenHouse");
         stage.show();
     }
 
