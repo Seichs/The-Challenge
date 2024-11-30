@@ -1,0 +1,56 @@
+/* Base Button Style */
+.button {
+    -fx-background-color: #86FF4F; /* Secondary Color */
+    -fx-text-fill: white;
+    -fx-background-radius: 25; /* Rounded corners */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20; /* Add spacing inside the button */
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-cursor: hand; /* Pointer cursor */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 2); /* Subtle shadow */
+    -fx-transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Hover Effect for Primary Buttons */
+.button:hover {
+    -fx-background-color: #5DBF2A; /* Slightly darker green hover color */
+    -fx-effect: dropshadow(gaussian, rgb(255, 255, 255), 12, 0, 0, 3); /* Enhanced shadow for hover */
+}
+
+/* Secondary Button Style */
+.secondary-button {
+    -fx-background-color: #A9FF82; /* Primary Color */
+    -fx-text-fill: #2d3436; /* Darker text */
+    -fx-background-radius: 25;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect for Secondary Button */
+.secondary-button:hover {
+    -fx-background-color: #86FF4F; /* Match secondary color for hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 3);
+}
+
+/* Link Style for "Forgot Password?" */
+.link-label {
+    -fx-text-fill: #aaaaaa; /* Grey color */
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-underline: true; /* Make it look like a link */
+    -fx-padding: 5 0 0 0;
+}
+
+/* Hover Effect for Link */
+.link-label:hover {
+    -fx-text-fill: #888888; /* Slightly darker grey */
+}
