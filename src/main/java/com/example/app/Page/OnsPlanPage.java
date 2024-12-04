@@ -1,4 +1,4 @@
-package com.example.app.Page;
+package com.example.app;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,7 +21,7 @@ public class OnsPlanPage {
     private void goToOnsPlanPage() {
         try {
             // Load the OnsPlanPage.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/OnsPlanPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/OnsPlanPage.fxml"));
             Parent root = loader.load();
 
             // Get the current stage
