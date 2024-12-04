@@ -1,5 +1,6 @@
 package com.example.app.Page;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -28,6 +30,12 @@ public class HomePage {
     private ImageView buttonImage4;
 
     @FXML
+    private ImageView tempButtonImage; // The ImageView inside the Temp.png button
+
+    private int tempButtonClickCount = 0; // Counter for the Temp button clicks
+    private final int easterEggTriggerCount = 10; // Number of clicks to trigger the easter egg
+
+    @FXML
     protected void initialize() {
         // Set images for buttons
         try {
@@ -35,6 +43,7 @@ public class HomePage {
             buttonImage2.setImage(new Image(getClass().getResource("/com/example/app/icons/Ons_plan.png").toExternalForm()));
             buttonImage3.setImage(new Image(getClass().getResource("/com/example/app/icons/Over_ons.png").toExternalForm()));
             buttonImage4.setImage(new Image(getClass().getResource("/com/example/app/icons/Groei_tips.png").toExternalForm()));
+            tempButtonImage.setImage(new Image(getClass().getResource("/com/example/app/icons/Temp.png").toExternalForm())); // Set default Temp image
         } catch (Exception e) {
             e.printStackTrace(); // Catch errors related to missing resources
         }
@@ -54,8 +63,6 @@ public class HomePage {
             currentStage.setScene(newScene);
             currentStage.setTitle(pageTitle);
 
-
-
             // Show the stage
             currentStage.show();
         } catch (IOException e) {
@@ -63,25 +70,47 @@ public class HomePage {
         }
     }
 
-
-
     @FXML
     protected void KlikKassen(ActionEvent event) {
         switchScene(event, "/com/example/app/PageUIDesign/KassenPage.fxml", "Kassen");
     }
+
     @FXML
     protected void KlikOnsPlan(ActionEvent event) {
-        // Update the label text when a button is clicked
         switchScene(event, "/com/example/app/PageUIDesign/OnsPlanPage.fxml", "Ons plan");
     }
+
     @FXML
     protected void KlikOverOns(ActionEvent event) {
-        // Update the label text when a button is clicked
         switchScene(event, "/com/example/app/PageUIDesign/OverOnsPage.fxml", "Over ons");
     }
+
     @FXML
     protected void KlikGroeiTips(ActionEvent event) {
-        // Update the label text when a button is clicked
-        switchScene(event, "/com/example/app/PageUIDesign/GroeiTipsPage.fxml", "Over ons");
+        switchScene(event, "/com/example/app/PageUIDesign/GroeiTipsPage.fxml", "Groei Tips");
+    }
+
+    // Easter Egg: Handle clicks on the Temp.png button
+    @FXML
+    private void handleTempButtonClick() {
+        tempButtonClickCount++;
+
+        if (tempButtonClickCount == easterEggTriggerCount) {
+            triggerEasterEgg();
+        }
+    }
+
+    private void triggerEasterEgg() {
+        // Change the image to the Lebron.png picture
+        tempButtonImage.setImage(new Image(getClass().getResource("/com/example/app/icons/Lebron.png").toExternalForm()));
+
+        // Create a delay to revert the image back after 2 seconds
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(event -> {
+            // Revert back to the original image
+            tempButtonImage.setImage(new Image(getClass().getResource("/com/example/app/icons/Temp.png").toExternalForm()));
+            tempButtonClickCount = 0; // Reset the click counter
+        });
+        pause.play();
     }
 }
