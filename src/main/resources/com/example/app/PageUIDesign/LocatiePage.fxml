@@ -2,22 +2,44 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.text.Text?>
 
 <Pane prefHeight="620.0" prefWidth="424.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.Page.KassenPage">
     <children>
         <Pane prefHeight="105.0" prefWidth="424.0" style="-fx-background-color: #A9FF82;">
             <children>
-                <Label alignment="CENTER" layoutX="116.0" layoutY="15.0" prefHeight="74.0" prefWidth="192.0" text="Kassen" textAlignment="CENTER" textFill="WHITE">
+                <Label alignment="CENTER" layoutX="116.0" layoutY="15.0" prefHeight="74.0" prefWidth="192.0" text="Locatie" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="52.0" />
                     </font>
                 </Label>
-                <Button fx:id="goBackButton" layoutX="182.0" layoutY="308.0" text="Ga terug" />
                 <Pane layoutY="98.0" prefHeight="10.0" prefWidth="424.0" style="-fx-background-color: #86FF4F;" />
             </children>
         </Pane>
+          <Button fx:id="goBackButton" layoutX="181.0" layoutY="554.0" text="Ga terug" />
+      <Pane layoutX="39.0" layoutY="128.0" prefHeight="119.0" prefWidth="5.0" style="-fx-background-color: #267F00;" />
+      <Text fill="#267f00" layoutX="50.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bij een raam" wrappingWidth="282.93670654296875">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Text>
+      <TextArea editable="false" layoutX="50.0" layoutY="154.0" prefHeight="95.0" prefWidth="358.0" text="Ramen zijn een goede eerste gedachten alleen zijn er wel een&#10;paar aandachtspuntjes. Als ramen niet goed geïsoleerd zijn&#10;kunnen de plantjes in de kas hier veel last van hebben. Vooral&#10;tijdens de winter is dit een probleem waar je goed op moet&#10;letten, want te veel kou is schadelijk voor gevoelige plantjes." />
+      <Pane layoutX="39.0" layoutY="253.0" prefHeight="150.0" prefWidth="5.0" style="-fx-background-color: #37C100;" />
+      <Text fill="#37c100" layoutX="50.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kas in de tuin" wrappingWidth="282.93670654296875">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Text>
+      <TextArea editable="false" layoutX="50.0" layoutY="279.0" prefHeight="127.0" prefWidth="358.0" text="in de tuin kan ook! Alleen zoals eerder vermeld kan te veel kou&#10;zorgen voor problemen.Dus wanneer je kas buiten staat denk&#10;hierover na. De tuin zorgt voor frisse lucht, waar de kleine&#10;plantjes.&#10;Het bestrijdt schimmel en ziektes, ook helpt het met de&#10;fotosynthese van de plantjes.  Ze hebben een goede bron van&#10;CO2 nodig namelijk. " />
+      <Pane layoutX="40.0" layoutY="414.0" prefHeight="127.0" prefWidth="5.0" style="-fx-background-color: #267F00;" />
+      <Text fill="#267f00" layoutX="50.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Neppe lichtjes" wrappingWidth="282.93670654296875">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Text>
+      <TextArea editable="false" layoutX="50.0" layoutY="435.0" prefHeight="105.0" prefWidth="358.0" text="Kunstlicht is een goede optie als andere oplossingen niet&#10;werken. LED-lampen zijn ideaal en kunnen permanent of&#10;seizoensgebonden worden gebruikt, bijvoorbeeld in de&#10;winter om kou van ramen te vermijden. Kies wel een groeilamp&#10;die wit licht geeft voor het beste effect." />
     </children>
 </Pane>

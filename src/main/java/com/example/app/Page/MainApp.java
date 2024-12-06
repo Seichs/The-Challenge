@@ -24,7 +24,7 @@ public class MainApp extends Application {
         FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("SmartGreenHouse");
+        stage.setTitle("piemel hihi");
         stage.show();
     }
 

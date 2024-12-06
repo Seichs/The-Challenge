@@ -2,22 +2,37 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.text.Text?>
 
 <Pane prefHeight="620.0" prefWidth="424.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.Page.KassenPage">
     <children>
         <Pane prefHeight="105.0" prefWidth="424.0" style="-fx-background-color: #A9FF82;">
             <children>
-                <Label alignment="CENTER" layoutX="116.0" layoutY="15.0" prefHeight="74.0" prefWidth="192.0" text="Kassen" textAlignment="CENTER" textFill="WHITE">
+                <Label alignment="CENTER" layoutX="78.0" layoutY="15.0" prefHeight="75.0" prefWidth="270.0" text="Voeding" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="52.0" />
                     </font>
                 </Label>
-                <Button fx:id="goBackButton" layoutX="182.0" layoutY="308.0" text="Ga terug" />
                 <Pane layoutY="98.0" prefHeight="10.0" prefWidth="424.0" style="-fx-background-color: #86FF4F;" />
             </children>
         </Pane>
+          <Button fx:id="goBackButton" layoutX="181.0" layoutY="557.0" text="Ga terug" />
+      <Pane layoutX="49.0" layoutY="138.0" prefHeight="105.0" prefWidth="5.0" style="-fx-background-color: #267F00;" />
+      <Text fill="#267f00" layoutX="60.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voeding" wrappingWidth="282.93670654296875">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Text>
+      <TextArea editable="false" layoutX="56.0" layoutY="164.0" prefHeight="75.0" prefWidth="355.0" text="Er zijn veel natuurlijke voedingstoffen voor plantjes,&#10;deze kan je vooral vinden in je etensrestjes en afval.&#10;Je hoeft dus geen chemische pakjes te halen bij de intratuin." />
+      <Pane layoutX="49.0" layoutY="269.0" prefHeight="263.0" prefWidth="5.0" style="-fx-background-color: #37C100;" />
+      <Text fill="#37c100" layoutX="60.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restjes" wrappingWidth="282.93670654296875">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Text>
+      <TextArea editable="false" layoutX="61.0" layoutY="293.0" prefHeight="237.0" prefWidth="346.0" text="-Bananenschillen: Zitten vol met kalium en fosfor.&#10;  je kan de stukjes heel klein snijden en stoppen in de aarde&#10;  of er een thee van maken.&#10;-Eierschillen: Bevat calcium.&#10;  maak het tot een dun poedertje en sprinkel het over de&#10;  aarde. &#10;-Koffiedik: Zorgt voor stikstof.&#10;  Meng het door de aarde of sprinkel het erop. &#10;-Groente of fruit restjes: vol aan van alles.&#10;  Maak hier een thee van en gier het over de plantjes.&#10; &#10; Laat de thee eerst koud worden, want heet water is slecht&#10;  voor wortels!!!!" />
     </children>
 </Pane>
