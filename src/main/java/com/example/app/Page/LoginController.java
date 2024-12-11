@@ -2,16 +2,23 @@ package com.example.app.Page;
 
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.animation.FadeTransition;
+import javafx.scene.input.KeyEvent;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.io.IOException;
 
 public class LoginController {
@@ -20,58 +27,84 @@ public class LoginController {
     private Pane rootPane;
 
     @FXML
-    private TextField usernameField;  // Assuming there is a TextField for username
+    private TextField usernameField;  // For email
 
     @FXML
-    private PasswordField passwordField;  // Assuming there is a PasswordField for password
+    private PasswordField passwordField;  // For password
 
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/thechallenge";  // Database URL
+    private static final String DB_USER = "root";  // Replace with your MySQL username
+    private static final String DB_PASSWORD = "root";  // Replace with your MySQL password
+
+    // Method to handle login
     @FXML
     private void handleLogin() {
-        // Get username and password from the fields
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String username = usernameField.getText();  // Get email
+        String password = passwordField.getText();  // Get password
 
-        // Validate username and password
-        if ("admin".equals(username) && "admin".equals(password)) {
-            // If valid, transition to HomePage.fxml with animation
-            try {
-                // Load the HomePage FXML
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
-                Parent homeRoot = loader.load();
+        // Check if email or password fields are empty
+        if (username.isEmpty() || password.isEmpty()) {
+            showErrorMessage("Error", "Both fields are required!");
+            return;
+        }
 
-                // Fade out the current Login pane
-                FadeTransition fadeOut = new FadeTransition(Duration.millis(500), rootPane);
-                fadeOut.setFromValue(1.0);
-                fadeOut.setToValue(0.0);
-
-                fadeOut.setOnFinished(event -> {
-                    // Create a new Scene for the HomePage
-                    Scene homeScene = new Scene(homeRoot);
-
-                    // Get the current stage (window) and set the new scene
-                    Stage currentStage = (Stage) rootPane.getScene().getWindow();
-                    currentStage.setScene(homeScene);
-                    currentStage.setTitle("Home - SmartGreenHouse");
-
-                    // Apply a fade-in animation to the HomePage
-                    FadeTransition fadeIn = new FadeTransition(Duration.millis(500), homeRoot);
-                    fadeIn.setFromValue(0.0);
-                    fadeIn.setToValue(1.0);
-                    fadeIn.play();
-                });
-
-                fadeOut.play();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        // Validate the login credentials
+        if (validateLogin(username, password)) {
+            // If valid, transition to HomePage
+            switchToHomePage();  // Method to switch to the HomePage
         } else {
-            // Handle invalid login
-            System.out.println("Invalid username or password!");
+            // If invalid, show an error message
+            showErrorMessage("Invalid Login", "Invalid email or password.");
         }
     }
 
+    // Validate login credentials against the database
+    private boolean validateLogin(String email, String password) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            String query = "SELECT * FROM Klant WHERE Email = ? AND Wachtwoord = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+
+            ResultSet resultSet = stmt.executeQuery();
+            return resultSet.next();  // If a row is returned, the login is valid
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;  // In case of an error, consider the login as invalid
+        }
+    }
+
+    // Show an error message in a pop-up alert
+    private void showErrorMessage(String title, String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Method to switch to HomePage after successful login
+    private void switchToHomePage() {
+        try {
+            // Load the HomePage FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
+            Parent homePageRoot = loader.load();
+
+            // Get the current stage (window)
+            Stage currentStage = (Stage) rootPane.getScene().getWindow();
+
+            // Set the HomePage scene
+            Scene homePageScene = new Scene(homePageRoot);
+            currentStage.setScene(homePageScene);  // Change scene to HomePage
+            currentStage.setTitle("Home Page - SmartGreenHouse");  // Set the title of the new page
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showErrorMessage("Error", "Failed to load the HomePage.");
+        }
+    }
+
+    // Handle the registration button click
     @FXML
     private void handleRegister() {
         try {
@@ -79,49 +112,42 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/RegisterView.fxml"));
             Parent registerRoot = loader.load();
 
-            // Set up the Register view below the visible area
-            rootPane.getChildren().add(registerRoot);
-            registerRoot.setTranslateY(rootPane.getHeight());
+            // Get the current stage (window) and set the new scene
+            Stage currentStage = (Stage) rootPane.getScene().getWindow();
+            Scene registerScene = new Scene(registerRoot);
 
-            // Animate the current view out and the new view in
-            TranslateTransition slideOut = new TranslateTransition(Duration.millis(300), rootPane.getChildren().get(0));
-            slideOut.setFromY(0);
-            slideOut.setToY(-rootPane.getHeight());
+            // Add the translation animation for Register button
+            TranslateTransition slideOut = new TranslateTransition(Duration.millis(300), rootPane);
+            slideOut.setFromX(0);
+            slideOut.setToX(-rootPane.getWidth()); // Slide out to the left
 
-            TranslateTransition slideIn = new TranslateTransition(Duration.millis(300), registerRoot);
-            slideIn.setFromY(rootPane.getHeight());
-            slideIn.setToY(0);
+            // After the animation, apply the new scene (RegisterView)
+            slideOut.setOnFinished(event -> {
+                currentStage.setScene(registerScene);  // Change to register scene
+                currentStage.setTitle("Register - SmartGreenHouse");  // Set the title of the register page
+            });
 
-            slideOut.setOnFinished(event -> rootPane.getChildren().remove(0)); // Remove the old view after the animation
-            slideOut.play();
-            slideIn.play();
+            slideOut.play();  // Start the slide-out animation
 
         } catch (IOException e) {
             e.printStackTrace();
+            showErrorMessage("Error", "Failed to load the registration form.");
         }
     }
 
+    // Add event handler for the Enter key press for login
     @FXML
-    private Pane loginPane;
-
-    @FXML
-    private Pane registerPane;
-
-    public void switchToRegister() {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), loginPane);
-        fadeOut.setFromValue(1.0);
-        fadeOut.setToValue(0.0);
-        fadeOut.setOnFinished(event -> {
-            loadRegisterView();
-        });
-        fadeOut.play();
+    private void handleKeyPress(KeyEvent event) {
+        if (event.getCode().toString().equals("ENTER")) {
+            handleLogin();  // Trigger login if Enter is pressed
+        }
     }
 
-    private void loadRegisterView() {
-        registerPane.setVisible(true);
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(500), registerPane);
-        fadeIn.setFromValue(0.0);
-        fadeIn.setToValue(1.0);
-        fadeIn.play();
+    // Add event handler for the Enter key press for register (when on the Register page)
+    @FXML
+    private void handleKeyPressRegister(KeyEvent event) {
+        if (event.getCode().toString().equals("ENTER")) {
+            handleRegister();  // Trigger register if Enter is pressed
+        }
     }
 }

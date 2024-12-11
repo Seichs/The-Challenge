@@ -21,7 +21,7 @@ public class ZaadjesPage {
     private void goBackToHomePage() {
         try {
             // Load the HomePage.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/ZaadjesPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/GroeiTipsPage.fxml"));
             Parent root = loader.load();
 
             // Get the current stage (from the goBackButton's scene)

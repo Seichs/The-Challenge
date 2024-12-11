@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.Page;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,40 +10,31 @@ import javafx.fxml.FXMLLoader;
 public class OnsPlanPage {
 
     @FXML
-    private Button goToOnsPlanButton; // Updated button ID for OnsPlanPage navigation
+    private Button goBackButton; // Button voor 'Ga terug'
 
     @FXML
     private void initialize() {
-        // Initialize the action for the goToOnsPlanButton
-        goToOnsPlanButton.setOnAction(event -> goToOnsPlanPage());
+        // Deze methode kan hier leeg blijven, de actie wordt via FXML gekoppeld.
     }
 
-    private void goToOnsPlanPage() {
+    @FXML
+    private void goBack() {
         try {
-            // Load the OnsPlanPage.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/OnsPlanPage.fxml"));
+            // Laad de HomePage.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
             Parent root = loader.load();
 
-            // Get the current stage
-            Stage stage = (Stage) goToOnsPlanButton.getScene().getWindow();
+            // Krijg het huidige venster (Stage)
+            Stage stage = (Stage) goBackButton.getScene().getWindow();
 
-            // Set the new scene
+            // Zet de nieuwe scène
             Scene scene = new Scene(root);
             stage.setScene(scene);
 
-            // Maximize the window manually to avoid OS issues
-            javafx.stage.Screen screen = javafx.stage.Screen.getPrimary();
-            javafx.geometry.Rectangle2D bounds = screen.getVisualBounds();
+            // Zet de titel van het venster (optioneel)
+            stage.setTitle("Home Page");
 
-            stage.setX(bounds.getMinX());
-            stage.setY(bounds.getMinY());
-            stage.setWidth(bounds.getWidth());
-            stage.setHeight(bounds.getHeight());
-
-            // Set the stage title
-            stage.setTitle("Ons Plan Page");
-
-            // Show the stage
+            // Toon de nieuwe scène (HomePage)
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
