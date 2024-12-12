@@ -3,16 +3,18 @@ package com.example.app.Page;
 import com.example.app.database.dbase;
 import com.example.app.Page.Slimmekas;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.Scene;
+import javafx.scene.Parent;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,62 +25,49 @@ public class KassenPage {
     private Button goBackButton;
 
     @FXML
-    private Button addKasButton; // Button to add a new Kas
+    private Button addKasButton;
 
     @FXML
-    private VBox dataBox;  // This is the VBox where data will be displayed
+    private VBox dataBox;  // VBox where data is displayed
 
-    private int loadedKasCount = 0; // Track how many Kassen have been loaded
+    private int loadedKasCount = 0;
 
     @FXML
     private void initialize() {
-        // Set action for "Go Back" button
+        // Action for the "Go Back" button
         goBackButton.setOnAction(event -> goBackToHomePage());
 
-        // Load Slimmekas data when the page initializes
+        // Load initial data for the Slimmekas (only 2 boxes initially)
         loadInitialSlimmekasData();
 
-        // Action for "Add Kas" button
+        // Action for the "Add Kas" button
         addKasButton.setOnAction(event -> loadOneSlimmekas());
     }
 
     private void goBackToHomePage() {
         try {
-            // Load the FXML file for the homepage
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
             Parent root = loader.load();
-
-            // Get the current stage and set the new scene
             Stage stage = (Stage) goBackButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-
-            // Show the stage
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-
-            // Show an alert if navigation fails
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Navigatiefout");
-            alert.setHeaderText("Kan niet terug naar de homepage");
-            alert.setContentText("Er is een fout opgetreden bij het laden van de homepage.");
-            alert.showAndWait();
         }
     }
 
     private void loadInitialSlimmekasData() {
         try {
-            // Load the first batch of Slimmekas data (if any)
             dbase database = new dbase();
             List<Slimmekas> slimmekasList = database.getSlimmekasData();
 
-            for (int i = 0; i < Math.min(3, slimmekasList.size()); i++) {
+            // Load the first 2 Kassen, or less if there aren't enough
+            for (int i = 0; i < Math.min(2, slimmekasList.size()); i++) {
                 Slimmekas kas = slimmekasList.get(i);
                 HBox kasBox = createKasBox(kas);
                 dataBox.getChildren().add(kasBox);
+                loadedKasCount++;
             }
-
-            loadedKasCount = Math.min(3, slimmekasList.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,22 +78,20 @@ public class KassenPage {
             dbase database = new dbase();
             List<Slimmekas> slimmekasList = database.getSlimmekasData();
 
-            // Check if there are more Kassen to load
-            if (loadedKasCount >= slimmekasList.size()) {
+            // Check if there are more Kassen to load (only up to 4)
+            if (loadedKasCount >= 4) {
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Geen Nieuwe Kassen");
                 alert.setHeaderText("Er zijn geen nieuwe kassen beschikbaar om te laden.");
                 alert.setContentText("Alle beschikbare kassen zijn al geladen.");
                 alert.showAndWait();
-                return;
+                return;  // Stop loading if all kassen are already loaded
             }
 
             // Load the next Kas
             Slimmekas kas = slimmekasList.get(loadedKasCount);
             HBox kasBox = createKasBox(kas);
             dataBox.getChildren().add(kasBox);
-
-            // Increment the count of loaded Kassen
             loadedKasCount++;
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,23 +99,42 @@ public class KassenPage {
     }
 
     private HBox createKasBox(Slimmekas kas) {
-        HBox kasBox = new HBox(10);
-        kasBox.setAlignment(javafx.geometry.Pos.CENTER);
-        kasBox.setStyle("-fx-background-color: lightgreen; -fx-padding: 10; -fx-border-radius: 5px;");
+        // Create a new HBox for the Kas with horizontal layout
+        HBox kasBox = new HBox(15);  // Reduced space between each item to make it more compact
+        kasBox.setStyle("-fx-background-color: white; -fx-padding: 5; -fx-border-radius: 5px; -fx-border-color: #1ca120; -fx-border-width: 2px;"); // Reduced padding for compact boxes
+        kasBox.setMaxHeight(120);  // Set a maximum height for the box to keep it compact
 
-        Label kasLabel = new Label("Kas ID: " + kas.getKasID());
-        kasLabel.setStyle("-fx-font-size: 14px; -fx-font-family: 'Arial';");
+        // Create a VBox to arrange the icon and the label vertically
+        VBox kasIDBox = createLabelWithIcon("Kas ID: " + kas.getKasID(), "/com/example/app/icons/Kassen2.png", 60, 60);  // Slightly smaller Kas icon size
+        VBox tempBox = createLabelWithIcon(kas.getTemperatuur() + " °C", null, 45, 45);  // Slightly smaller temperature icon
+        VBox humidityBox = createLabelWithIcon(kas.getLuchtvochtigheid() + " %", "/com/example/app/icons/waterdrop2.png", 45, 45);  // Slightly smaller humidity icon
+        VBox dayBox = createLabelWithIcon("Dag: " + kas.getDagnummer(), "/com/example/app/icons/agendaaa2.png", 45, 45);  // Slightly smaller day icon
 
-        Label tempLabel = new Label(kas.getTemperatuur() + " °C");
-        tempLabel.setStyle("-fx-font-size: 14px; -fx-font-family: 'Arial';");
+        // Add the label boxes to the main HBox
+        kasBox.getChildren().addAll(kasIDBox, tempBox, humidityBox, dayBox);
 
-        Label humidityLabel = new Label(kas.getLuchtvochtigheid() + " %");
-        humidityLabel.setStyle("-fx-font-size: 14px; -fx-font-family: 'Arial';");
-
-        Label dayLabel = new Label("Dag: " + kas.getDagnummer());
-        dayLabel.setStyle("-fx-font-size: 14px; -fx-font-family: 'Arial';");
-
-        kasBox.getChildren().addAll(kasLabel, tempLabel, humidityLabel, dayLabel);
         return kasBox;
+    }
+
+    // Method to create a VBox with an icon above the label and allow custom icon size
+    private VBox createLabelWithIcon(String labelText, String iconPath, int iconWidth, int iconHeight) {
+        VBox vbox = new VBox(5); // 5px space between the icon and label
+        vbox.setStyle("-fx-alignment: center;");  // Center the content (icon and label) inside the VBox
+
+        if (iconPath != null) {
+            Image icon = new Image(getClass().getResource(iconPath).toExternalForm());
+            ImageView imageView = new ImageView(icon);
+            imageView.setFitWidth(iconWidth); // Set the custom width for the icon
+            imageView.setFitHeight(iconHeight); // Set the custom height for the icon
+            imageView.setPreserveRatio(true); // Preserve the aspect ratio to avoid distortion
+            vbox.getChildren().add(imageView); // Add the icon to the VBox
+        }
+
+        // Create and style the label
+        Label label = new Label(labelText);
+        label.setStyle("-fx-font-size: 12px; -fx-font-family: 'Arial'; -fx-alignment: center;");
+        vbox.getChildren().add(label); // Add the label below the icon
+
+        return vbox;
     }
 }
