@@ -37,7 +37,7 @@ public class KassenPage {
         // Action for the "Go Back" button
         goBackButton.setOnAction(event -> goBackToHomePage());
 
-        // Load initial data for the Slimmekas (only 2 boxes initially)
+        // Load initial data for the Slimmekas (only 1 box initially)
         loadInitialSlimmekasData();
 
         // Action for the "Add Kas" button
@@ -61,9 +61,9 @@ public class KassenPage {
             dbase database = new dbase();
             List<Slimmekas> slimmekasList = database.getSlimmekasData();
 
-            // Load the first 2 Kassen, or less if there aren't enough
-            for (int i = 0; i < Math.min(2, slimmekasList.size()); i++) {
-                Slimmekas kas = slimmekasList.get(i);
+            // Load the first Slimmekas (only 1 box initially)
+            if (slimmekasList.size() > 0) {
+                Slimmekas kas = slimmekasList.get(0);
                 HBox kasBox = createKasBox(kas);
                 dataBox.getChildren().add(kasBox);
                 loadedKasCount++;
