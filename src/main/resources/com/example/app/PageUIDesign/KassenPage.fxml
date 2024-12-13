@@ -4,9 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <Pane prefHeight="620.0" prefWidth="424.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.Page.KassenPage">
@@ -31,9 +28,10 @@
       </VBox>
 
       <!-- Ga terug knop -->
-      <Button fx:id="goBackButton" layoutX="20.0" layoutY="540.0" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18;" text="←" />
+      <Button fx:id="goBackButton" layoutX="14.0" layoutY="540.0" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18;" text="←" />
 
       <!-- Voeg Kas Knop (plus knop) rechts onderin -->
-      <Button fx:id="addKasButton" layoutX="350.0" layoutY="540.0" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18;" text="+" />
+      <Button fx:id="addKasButton" layoutX="187.0" layoutY="535.0" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18;" text="+" />
+      <Button fx:id="goBackButton1" layoutX="310.0" layoutY="540.0" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18;" text="→" />
    </children>
 </Pane>
