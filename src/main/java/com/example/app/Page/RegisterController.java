@@ -35,16 +35,26 @@ public class RegisterController {
     @FXML
     private PasswordField passwordField; // Invoer voor wachtwoord
 
+    @FXML
+    private PasswordField confirmPasswordField; // Invoer voor bevestigen wachtwoord
+
     // Methode die wordt aangeroepen wanneer de "Register" knop wordt ingedrukt
     @FXML
     private void handleRegister() {
         String fullName = fullNameField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
 
         // Valideer de invoer
-        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             showAlert("Fout", "Alle velden moeten ingevuld zijn.", AlertType.ERROR);
+            return;
+        }
+
+        // Controleer of wachtwoorden overeenkomen
+        if (!password.equals(confirmPassword)) {
+            showAlert("Fout", "Wachtwoorden komen niet overeen. Probeer het opnieuw.", AlertType.ERROR);
             return;
         }
 
