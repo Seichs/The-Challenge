@@ -1,13 +1,13 @@
 package com.example.app.Page;
 
 import com.example.app.database.dbase;
-import com.example.app.Page.Slimmekas;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Priority;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
@@ -28,9 +28,10 @@ public class KassenPage {
     private Button addKasButton;
 
     @FXML
-    private VBox dataBox;  // VBox where data is displayed
+    private VBox dataBox; // VBox where data is displayed
 
-    private int loadedKasCount = 0;
+    private int loadedKasCount = 0; // Tracks how many kassen have been loaded on this page
+    private static final int MAX_KASSEN_PER_PAGE = 3; // Limit of kassen per page
 
     @FXML
     private void initialize() {
@@ -78,21 +79,29 @@ public class KassenPage {
             dbase database = new dbase();
             List<Slimmekas> slimmekasList = database.getSlimmekasData();
 
-            // Check if there are more Kassen to load (only up to 4)
-            if (loadedKasCount >= 4) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Geen Nieuwe Kassen");
-                alert.setHeaderText("Er zijn geen nieuwe kassen beschikbaar om te laden.");
-                alert.setContentText("Alle beschikbare kassen zijn al geladen.");
+            // Check if the maximum number of kassen per page is reached
+            if (loadedKasCount >= MAX_KASSEN_PER_PAGE) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Limiet Bereikt");
+                alert.setHeaderText("Maximaal aantal kassen bereikt");
+                alert.setContentText("Er kunnen maximaal " + MAX_KASSEN_PER_PAGE + " kassen op deze pagina worden toegevoegd.");
                 alert.showAndWait();
-                return;  // Stop loading if all kassen are already loaded
+                return;
             }
 
-            // Load the next Kas
-            Slimmekas kas = slimmekasList.get(loadedKasCount);
-            HBox kasBox = createKasBox(kas);
-            dataBox.getChildren().add(kasBox);
-            loadedKasCount++;
+            // Load the next kas if available
+            if (loadedKasCount < slimmekasList.size()) {
+                Slimmekas kas = slimmekasList.get(loadedKasCount);
+                HBox kasBox = createKasBox(kas);
+                dataBox.getChildren().add(kasBox);
+                loadedKasCount++;
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Geen Nieuwe Kassen");
+                alert.setHeaderText("Geen meer beschikbare kassen");
+                alert.setContentText("Alle beschikbare kassen zijn al geladen.");
+                alert.showAndWait();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,26 +109,38 @@ public class KassenPage {
 
     private HBox createKasBox(Slimmekas kas) {
         // Create a new HBox for the Kas with horizontal layout
-        HBox kasBox = new HBox(15);  // Reduced space between each item to make it more compact
-        kasBox.setStyle("-fx-background-color: white; -fx-padding: 5; -fx-border-radius: 5px; -fx-border-color: #1ca120; -fx-border-width: 2px;"); // Reduced padding for compact boxes
-        kasBox.setMaxHeight(120);  // Set a maximum height for the box to keep it compact
+        HBox kasBox = new HBox(10); // Add spacing between sections
+        kasBox.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-radius: 5px; -fx-border-color: #1ca120; -fx-border-width: 3px;");
+        kasBox.setPrefHeight(100); // Match the example height
+        kasBox.setPrefWidth(500); // Consistent width to match layout
 
-        // Create a VBox to arrange the icon and the label vertically
-        VBox kasIDBox = createLabelWithIcon("Kas ID: " + kas.getKasID(), "/com/example/app/icons/Kassen2.png", 60, 60);  // Slightly smaller Kas icon size
-        VBox tempBox = createLabelWithIcon(kas.getTemperatuur() + " °C", null, 45, 45);  // Slightly smaller temperature icon
-        VBox humidityBox = createLabelWithIcon(kas.getLuchtvochtigheid() + " %", "/com/example/app/icons/waterdrop2.png", 45, 45);  // Slightly smaller humidity icon
-        VBox dayBox = createLabelWithIcon("Dag: " + kas.getDagnummer(), "/com/example/app/icons/agendaaa2.png", 45, 45);  // Slightly smaller day icon
+        // Kas ID section on the left
+        VBox kasIDBox = createLabelWithIcon("Kas " + kas.getKasID(), "/com/example/app/icons/Kassen2.png", 70, 70); // Larger Kas icon
 
-        // Add the label boxes to the main HBox
-        kasBox.getChildren().addAll(kasIDBox, tempBox, humidityBox, dayBox);
+        // Spacer for the middle white space
+        Region spacer = new Region();
+        spacer.setPrefWidth(80); // Match white space to example
+        HBox.setHgrow(spacer, Priority.NEVER);
+
+        // Icons and data section aligned right
+        HBox iconsAndData = new HBox(20); // Space between icons
+        iconsAndData.setStyle("-fx-alignment: center-right;");
+        iconsAndData.getChildren().addAll(
+                createLabelWithIcon(kas.getTemperatuur() + "°C", "/com/example/app/icons/temperature.png", 50, 50),
+                createLabelWithIcon(kas.getLuchtvochtigheid() + "%", "/com/example/app/icons/waterdrop2.png", 50, 50),
+                createLabelWithIcon(kas.getDagnummer() + "", "/com/example/app/icons/agendaaa2.png", 50, 50)
+        );
+
+        // Add everything to the main HBox
+        kasBox.getChildren().addAll(kasIDBox, spacer, iconsAndData);
 
         return kasBox;
     }
 
-    // Method to create a VBox with an icon above the label and allow custom icon size
+    // Method to create a VBox with an icon and label aligned at the center
     private VBox createLabelWithIcon(String labelText, String iconPath, int iconWidth, int iconHeight) {
-        VBox vbox = new VBox(5); // 5px space between the icon and label
-        vbox.setStyle("-fx-alignment: center;");  // Center the content (icon and label) inside the VBox
+        VBox vbox = new VBox(5); // Reduced space between the icon and label
+        vbox.setStyle("-fx-alignment: center;"); // Align content center
 
         if (iconPath != null) {
             Image icon = new Image(getClass().getResource(iconPath).toExternalForm());
@@ -132,7 +153,7 @@ public class KassenPage {
 
         // Create and style the label
         Label label = new Label(labelText);
-        label.setStyle("-fx-font-size: 12px; -fx-font-family: 'Arial'; -fx-alignment: center;");
+        label.setStyle("-fx-font-size: 14px; -fx-font-family: 'Arial';");
         vbox.getChildren().add(label); // Add the label below the icon
 
         return vbox;
