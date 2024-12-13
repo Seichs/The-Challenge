@@ -27,7 +27,7 @@ public class RegisterController {
     private Pane rootPane;
 
     @FXML
-    private TextField fullNameField; // Invoer voor volledige naam
+    private TextField usernameField; // Invoer voor gebruikersnaam (was fullName)
 
     @FXML
     private TextField emailField; // Invoer voor email
@@ -41,13 +41,13 @@ public class RegisterController {
     // Methode die wordt aangeroepen wanneer de "Register" knop wordt ingedrukt
     @FXML
     private void handleRegister() {
-        String fullName = fullNameField.getText();
+        String username = usernameField.getText(); // Verkrijg gebruikersnaam
         String email = emailField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
         // Valideer de invoer
-        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             showAlert("Fout", "Alle velden moeten ingevuld zijn.", AlertType.ERROR);
             return;
         }
@@ -59,7 +59,7 @@ public class RegisterController {
         }
 
         // Voeg de gebruiker toe aan de database
-        if (registerUser(fullName, email, password)) {
+        if (registerUser(username, email, password)) {
             showAlert("Succes", "Registratie geslaagd! Je kunt nu inloggen.", AlertType.INFORMATION);
             switchToLogin(); // Ga naar login-scherm na succesvolle registratie
         } else {
@@ -68,7 +68,7 @@ public class RegisterController {
     }
 
     // Methode om de gebruiker toe te voegen aan de database
-    private boolean registerUser(String fullName, String email, String password) {
+    private boolean registerUser(String username, String email, String password) {
         String url = "jdbc:mysql://localhost:3306/thechallenge"; // Je database-URL
         String dbUsername = "root"; // Je databasegebruikersnaam
         String dbPassword = "root"; // Je databasewachtwoord
@@ -78,12 +78,12 @@ public class RegisterController {
             return false; // Email bestaat al
         }
 
-        String query = "INSERT INTO Klant (FullName, Email, Wachtwoord) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Klant (Username, Email, Wachtwoord) VALUES (?, ?, ?)"; // Gebruikersnaam in plaats van fullName
 
         try (Connection conn = DriverManager.getConnection(url, dbUsername, dbPassword);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setString(1, fullName);
+            stmt.setString(1, username); // Gebruik gebruikersnaam
             stmt.setString(2, email);
             stmt.setString(3, password); // Gebruik versleuteling voor wachtwoorden in productie!
 
@@ -100,7 +100,7 @@ public class RegisterController {
     private boolean emailExists(String email) {
         String url = "jdbc:mysql://localhost:3306/thechallenge"; // Je database-URL
         String dbUsername = "root"; // Je databasegebruikersnaam
-        String dbPassword = "C@ncordia2"; // Je databasewachtwoord
+        String dbPassword = "root"; // Je databasewachtwoord
 
         String query = "SELECT COUNT(*) FROM Klant WHERE Email = ?";
 

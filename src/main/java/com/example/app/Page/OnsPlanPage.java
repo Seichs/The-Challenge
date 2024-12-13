@@ -14,7 +14,8 @@ public class OnsPlanPage {
 
     @FXML
     private void initialize() {
-        // Deze methode kan hier leeg blijven, de actie wordt via FXML gekoppeld.
+        // Methode om de actie aan de knop te koppelen zonder onAction in FXML
+        goBackButton.setOnAction(event -> goBack());
     }
 
     @FXML

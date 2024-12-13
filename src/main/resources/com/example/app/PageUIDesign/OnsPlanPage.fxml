@@ -11,7 +11,7 @@
     <children>
         <Pane prefHeight="105.0" prefWidth="424.0" style="-fx-background-color: #A9FF82;">
             <children>
-                <Label alignment="CENTER" layoutX="90.0" layoutY="15.0" prefHeight="75.0" prefWidth="243.0" text="Ons Plan" textAlignment="CENTER" textFill="WHITE">
+                <Label alignment="CENTER" layoutX="90.0" layoutY="15.0" prefHeight="75.0" prefWidth="243.0" text="Over ons" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="52.0" />
                     </font>
@@ -19,14 +19,21 @@
                 <Pane layoutY="98.0" prefHeight="10.0" prefWidth="424.0" style="-fx-background-color: #86FF4F;" />
             </children>
         </Pane>
-        <!-- Text content -->
-        <Text fill="#267f00" layoutX="40.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Waarom een kas?" wrappingWidth="282.93670654296875">
+        <Text fill="#267f00" layoutX="40.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sow Sigmas" wrappingWidth="282.93670654296875">
             <font>
                 <Font name="System Bold" size="19.0" />
             </font>
         </Text>
-        <Pane layoutX="29.0" layoutY="118.0" prefHeight="240.0" prefWidth="5.0" style="-fx-background-color: #267F00;" />
-        <TextArea editable="false" layoutX="40.0" layoutY="144.0" prefHeight="221.0" prefWidth="369.0" text="We hebben voor een slimme kas gekozen voor een aantal&#10;redenen. We deden onderzoek naar mogelijke problemen, toen&#10;kwamen we tot de ontdekking dat er tijdens de groei van een&#10;nieuw zaadje. Denk aan pesticiden, herbiciden en fungiciden.&#10;Er worden gewoon liters per hectare gebruikt om de groei&#10;te &quot;verbeteren&quot;. Dit vinden wij enorm zonde van de schade&#10;die de maak van deze chemicalium uit stoor.&#10;&#10;Ook word er enorm veel water verbruikt.&#10;Meestal gaat er dan ook veel water verloren, omdat er niet&#10;zuinig mee om gegaan wordt, door het op een kleinere en&#10;slimmere schaal te doen wordt dit ook verminderd." />
-      <Button fx:id="goBackButton" layoutX="24.0" layoutY="550.0" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18;" text="←" />
+        <Pane layoutX="29.0" layoutY="118.0" prefHeight="150.0" prefWidth="5.0" style="-fx-background-color: #267F00;" />
+        <TextArea editable="false" layoutX="40.0" layoutY="144.0" prefHeight="131.0" prefWidth="369.0" text="Onze naam komt van het Nederlandse woord &quot;Zaaien&quot;,&#10;en &quot;Sigmas&quot; komt van de bekende meme dat je een &quot;Alpha&quot; bent.&#10;&#10;Ons team bestaat uit 6 man;&#10;Bjorn, Vincent, Chamod, Max, Christian en Dees.&#10;We hebben dit project gemaakt voor de Challenge die we voor&#10;onze opleiding moesten doen." />
+        <Pane layoutX="29.0" layoutY="299.0" prefHeight="150.0" prefWidth="5.0" style="-fx-background-color: #37C100;" />
+        <Text fill="#37c100" layoutX="40.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Taak verdeling" wrappingWidth="282.93670654296875">
+            <font>
+                <Font name="System Bold" size="19.0" />
+            </font>
+        </Text>
+        <TextArea editable="false" layoutX="40.0" layoutY="325.0" prefHeight="131.0" prefWidth="369.0" text="Dees en Bjorn hebben het de app en interface gemaakt, maar &#10;de link van de database naar de app komt weer van de rest" />
+        <!-- De onAction is verwijderd uit de FXML -->
+        <Button fx:id="goBackButton" layoutX="14.0" layoutY="540.0" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18;" text="←" />
     </children>
 </Pane>
