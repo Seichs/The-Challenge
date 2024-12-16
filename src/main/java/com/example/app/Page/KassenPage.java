@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
@@ -132,9 +135,8 @@ public class KassenPage {
         spacer1.setPrefWidth(20);
         HBox.setHgrow(spacer1, Priority.NEVER);
 
-        // Pin icon
-        VBox pinBox = createLabelWithIcon("", "/com/example/app/icons/pin.png", 50, 50);
-        pinBox.setOnMouseClicked(event -> pinKasToHomePage(kas)); // Add click listener
+        // Pin icon with green background
+        VBox pinBox = createPinIconWithBackground(kas);
 
         // Spacer for layout
         Region spacer2 = new Region();
@@ -156,13 +158,57 @@ public class KassenPage {
         return kasBox;
     }
 
+    private VBox createPinIconWithBackground(Slimmekas kas) {
+        StackPane stackPane = new StackPane();
+
+        // Create the green rectangle as the background
+        Rectangle greenBackground = new Rectangle(50, 50);
+        greenBackground.setFill(Color.LIGHTGREEN);
+        greenBackground.setArcWidth(10); // Rounded corners
+        greenBackground.setArcHeight(10);
+
+        // Create the pin icon
+        ImageView pinIcon = new ImageView(new Image(getClass().getResource("/com/example/app/icons/pin.png").toExternalForm()));
+        pinIcon.setFitWidth(30);
+        pinIcon.setFitHeight(30);
+        pinIcon.setPreserveRatio(true);
+
+        // Add the rectangle and icon to the stack
+        stackPane.getChildren().addAll(greenBackground, pinIcon);
+
+        // Set click action
+        stackPane.setOnMouseClicked(event -> pinKasToHomePage(kas));
+
+        // Wrap in a VBox to maintain consistency with other elements
+        VBox pinBox = new VBox(stackPane);
+        pinBox.setStyle("-fx-alignment: center;");
+
+        return pinBox;
+    }
+
     private void pinKasToHomePage(Slimmekas kas) {
-        selectedKas = kas; // Store the selected kas for pinning
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Kas Vastgepind");
-        alert.setHeaderText(null);
-        alert.setContentText("Kas " + kas.getKasID() + " is vastgepind naar de Homepagina.");
-        alert.showAndWait();
+        try {
+            dbase database = new dbase();
+
+            // Reset alle kassen om ervoor te zorgen dat maar één kas is gepind
+            database.resetHomepageKas();
+
+            // Pin de geselecteerde kas (stel Kashomepage = 1)
+            database.setKasAsHomepage(kas.getKasID());
+
+            // Update de lokale status
+            selectedKas = kas;
+
+            // Laat een melding zien aan de gebruiker
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Kas Vastgepind");
+            alert.setHeaderText(null);
+            alert.setContentText("Kas " + kas.getKasID() + " is vastgepind naar de Homepagina.");
+            alert.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Fout bij het pinnen van de kas.");
+        }
     }
 
     // Method to create a VBox with an icon and label aligned at the center

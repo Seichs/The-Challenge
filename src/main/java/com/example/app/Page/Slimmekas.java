@@ -6,16 +6,18 @@ public class Slimmekas {
     private int dagnummer;
     private double temperatuur;
     private double luchtvochtigheid;
-    private String timestamp;  // Sla de timestamp als String op
+    private String timestamp;
+    private boolean isHomepage; // Nieuw veld toegevoegd
 
     // Constructor
-    public Slimmekas(int kasID, String sensortype, int dagnummer, double temperatuur, double luchtvochtigheid, String timestamp) {
+    public Slimmekas(int kasID, String sensortype, int dagnummer, double temperatuur, double luchtvochtigheid, String timestamp, boolean isHomepage) {
         this.kasID = kasID;
         this.sensortype = sensortype;
         this.dagnummer = dagnummer;
         this.temperatuur = temperatuur;
         this.luchtvochtigheid = luchtvochtigheid;
-        this.timestamp = timestamp;  // Ontvang de timestamp als String
+        this.timestamp = timestamp;
+        this.isHomepage = isHomepage;
     }
 
     // Getters
@@ -40,6 +42,14 @@ public class Slimmekas {
     }
 
     public String getTimestamp() {
-        return timestamp;  // Return de timestamp als String
+        return timestamp;
+    }
+
+    public boolean isHomepage() {
+        return isHomepage;
+    }
+
+    public void setHomepage(boolean isHomepage) {
+        this.isHomepage = isHomepage;
     }
 }
