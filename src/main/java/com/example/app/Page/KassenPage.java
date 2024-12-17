@@ -33,73 +33,70 @@ public class KassenPage {
     private Button addKasButton;
 
     @FXML
-    private Button goBackButton1; // Right arrow button for next page
+    private Button goBackButton1;
 
     @FXML
-    private VBox dataBox; // VBox where data is displayed
+    private VBox dataBox;
 
-    private int currentPage = 0; // Current page index
-    private static final int KASSEN_PER_PAGE = 3; // Limit of kassen per page
-    private List<Slimmekas> allKassen = new ArrayList<>(); // Full list of kassen from the database
-    private boolean isInitialLoad = true; // Flag to track initial load state
+    private int currentPage = 0;
+    private static final int KASSEN_PER_PAGE = 3;
+    private List<Slimmekas> allKassen = new ArrayList<>();
+    private boolean isInitialLoad = true;
 
     @FXML
     private void initialize() {
-        // Load the first kas only
-        loadFirstKas();
+        loadAllSlimmekasData();  // Start by loading all kassen data
 
-        // Actions for navigation buttons
-        goBackButton.setOnAction(event -> handleGoBack());
-        goBackButton1.setOnAction(event -> navigateToNextPage());
-
-        // Action for the "+" button to load all kassen
+        // Action for the "+" button to load new kassen
         addKasButton.setOnAction(event -> {
-            loadAllSlimmekasData();
+            loadNewKassenData();  // Load only new kassen with isLoaded = 0
             showPage(currentPage);
         });
-    }
 
-    private void loadFirstKas() {
-        try {
-            dbase database = new dbase();
-            allKassen = database.getSlimmekasData();
-
-            // Show only the first kas initially
-            if (!allKassen.isEmpty()) {
-                List<Slimmekas> initialKas = allKassen.subList(0, 1); // First kas
-                allKassen = initialKas;
-                showPage(currentPage);
-            } else {
-                showNoKassenAlert();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Other navigation button actions
+        goBackButton.setOnAction(event -> handleGoBack());
+        goBackButton1.setOnAction(event -> navigateToNextPage());
     }
 
     private void loadAllSlimmekasData() {
         if (isInitialLoad) {
             try {
                 dbase database = new dbase();
-                allKassen = database.getSlimmekasData(); // Load all kassen
+                allKassen = database.getSlimmekasData();
                 isInitialLoad = false;
+                showPage(currentPage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void showNoKassenAlert() {
+    private void loadNewKassenData() {
+        try {
+            dbase database = new dbase();
+            List<Slimmekas> newKassen = database.getNewSlimmekasData(); // Get kassen with isLoaded = 0
+
+            if (newKassen.isEmpty()) {
+                showNoNewKassenAlert(); // Show alert if there are no new kassen
+            } else {
+                allKassen.addAll(newKassen); // Add new kassen to the list
+                database.updateKassenIsLoaded(newKassen); // Mark these kassen as loaded in the database
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showNoNewKassenAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Geen Kassen Beschikbaar");
+        alert.setTitle("Geen Nieuwe Kassen");
         alert.setHeaderText(null);
-        alert.setContentText("Er zijn geen kassen in de database.");
+        alert.setContentText("Er zijn geen nieuwe kassen om in te laden.");
         alert.showAndWait();
     }
 
     private void handleGoBack() {
         if (currentPage == 0) {
-            // Navigate to homepage if on the first page
             goBackToHomePage();
         } else {
             navigateToPreviousPage();
@@ -119,7 +116,7 @@ public class KassenPage {
     }
 
     private void showPage(int pageIndex) {
-        dataBox.getChildren().clear(); // Clear the existing kassen
+        dataBox.getChildren().clear();
 
         int start = pageIndex * KASSEN_PER_PAGE;
         int end = Math.min(start + KASSEN_PER_PAGE, allKassen.size());
@@ -200,7 +197,6 @@ public class KassenPage {
             database.resetHomepageKas();
             database.setKasAsHomepage(kas.getKasID());
 
-            // Show notification for pinning
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Kas Vastgepind");
             alert.setHeaderText(null);
