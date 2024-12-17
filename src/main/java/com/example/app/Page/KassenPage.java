@@ -65,8 +65,9 @@ public class KassenPage {
                 allKassen = database.getSlimmekasData();
                 isInitialLoad = false;
                 showPage(currentPage);
-            } catch (Exception e) {
+            } catch (Exception e) { // Catching general exception
                 e.printStackTrace();
+                showDatabaseErrorAlert("Fout bij ophalen van kasgegevens");
             }
         }
     }
@@ -80,10 +81,12 @@ public class KassenPage {
                 showNoNewKassenAlert(); // Show alert if there are no new kassen
             } else {
                 allKassen.addAll(newKassen); // Add new kassen to the list
+                database.updateTimestampForLoadedKassen(newKassen); // Update the timestamp for the loaded kassen
                 database.updateKassenIsLoaded(newKassen); // Mark these kassen as loaded in the database
             }
-        } catch (Exception e) {
+        } catch (Exception e) { // Catching general exception
             e.printStackTrace();
+            showDatabaseErrorAlert("Fout bij het laden van nieuwe kassen");
         }
     }
 
@@ -92,6 +95,14 @@ public class KassenPage {
         alert.setTitle("Geen Nieuwe Kassen");
         alert.setHeaderText(null);
         alert.setContentText("Er zijn geen nieuwe kassen om in te laden.");
+        alert.showAndWait();
+    }
+
+    private void showDatabaseErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Database Fout");
+        alert.setHeaderText("Er is een fout opgetreden bij het ophalen van de gegevens.");
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
@@ -112,6 +123,7 @@ public class KassenPage {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            showDatabaseErrorAlert("Fout bij het terugkeren naar de homepagina");
         }
     }
 
@@ -202,8 +214,9 @@ public class KassenPage {
             alert.setHeaderText(null);
             alert.setContentText("Kas " + kas.getKasID() + " is vastgepind naar de homepage.");
             alert.showAndWait();
-        } catch (Exception e) {
+        } catch (Exception e) { // Catching general exception
             e.printStackTrace();
+            showDatabaseErrorAlert("Fout bij het vastpinnen van de kas");
         }
     }
 

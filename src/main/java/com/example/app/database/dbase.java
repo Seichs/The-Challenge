@@ -86,6 +86,25 @@ public class dbase {
         }
     }
 
+    // Update de timestamp van de kassen die ingeladen zijn
+    public void updateTimestampForLoadedKassen(List<Slimmekas> newKassen) {
+        String query = "UPDATE slimmekas SET Timestamp = CURRENT_TIMESTAMP WHERE KasID = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            for (Slimmekas kas : newKassen) {
+                pstmt.setInt(1, kas.getKasID());
+                pstmt.addBatch();
+            }
+
+            pstmt.executeBatch();  // Voer alle updates uit in een batch
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Fout bij het bijwerken van de timestamp voor de ingeladen kassen.");
+        }
+    }
+
     // Haal de kas op die op de homepage staat
     public Slimmekas getHomepageKas() {
         Slimmekas homepageKas = null;
