@@ -21,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class KassenPage {
@@ -32,23 +33,77 @@ public class KassenPage {
     private Button addKasButton;
 
     @FXML
+    private Button goBackButton1; // Right arrow button for next page
+
+    @FXML
     private VBox dataBox; // VBox where data is displayed
 
-    private int loadedKasCount = 0; // Tracks how many kassen have been loaded on this page
-    private static final int MAX_KASSEN_PER_PAGE = 3; // Limit of kassen per page
-
-    private Slimmekas selectedKas; // Stores the selected kas
+    private int currentPage = 0; // Current page index
+    private static final int KASSEN_PER_PAGE = 3; // Limit of kassen per page
+    private List<Slimmekas> allKassen = new ArrayList<>(); // Full list of kassen from the database
+    private boolean isInitialLoad = true; // Flag to track initial load state
 
     @FXML
     private void initialize() {
-        // Action for the "Go Back" button
-        goBackButton.setOnAction(event -> goBackToHomePage());
+        // Load the first kas only
+        loadFirstKas();
 
-        // Load initial data for the Slimmekas (only 1 box initially)
-        loadInitialSlimmekasData();
+        // Actions for navigation buttons
+        goBackButton.setOnAction(event -> handleGoBack());
+        goBackButton1.setOnAction(event -> navigateToNextPage());
 
-        // Action for the "Add Kas" button
-        addKasButton.setOnAction(event -> loadOneSlimmekas());
+        // Action for the "+" button to load all kassen
+        addKasButton.setOnAction(event -> {
+            loadAllSlimmekasData();
+            showPage(currentPage);
+        });
+    }
+
+    private void loadFirstKas() {
+        try {
+            dbase database = new dbase();
+            allKassen = database.getSlimmekasData();
+
+            // Show only the first kas initially
+            if (!allKassen.isEmpty()) {
+                List<Slimmekas> initialKas = allKassen.subList(0, 1); // First kas
+                allKassen = initialKas;
+                showPage(currentPage);
+            } else {
+                showNoKassenAlert();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadAllSlimmekasData() {
+        if (isInitialLoad) {
+            try {
+                dbase database = new dbase();
+                allKassen = database.getSlimmekasData(); // Load all kassen
+                isInitialLoad = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void showNoKassenAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Geen Kassen Beschikbaar");
+        alert.setHeaderText(null);
+        alert.setContentText("Er zijn geen kassen in de database.");
+        alert.showAndWait();
+    }
+
+    private void handleGoBack() {
+        if (currentPage == 0) {
+            // Navigate to homepage if on the first page
+            goBackToHomePage();
+        } else {
+            navigateToPreviousPage();
+        }
     }
 
     private void goBackToHomePage() {
@@ -56,13 +111,6 @@ public class KassenPage {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/app/PageUIDesign/HomePage.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) goBackButton.getScene().getWindow();
-            HomePage homePageController = loader.getController();
-
-            if (selectedKas != null) {
-                // Pass the selected kas to HomePageController to update the data
-                homePageController.updateKasData(selectedKas.getKasID());
-            }
-
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -70,81 +118,50 @@ public class KassenPage {
         }
     }
 
-    private void loadInitialSlimmekasData() {
-        try {
-            dbase database = new dbase();
-            List<Slimmekas> slimmekasList = database.getSlimmekasData();
+    private void showPage(int pageIndex) {
+        dataBox.getChildren().clear(); // Clear the existing kassen
 
-            // Load the first Slimmekas (only 1 box initially)
-            if (slimmekasList.size() > 0) {
-                Slimmekas kas = slimmekasList.get(0);
-                HBox kasBox = createKasBox(kas);
-                dataBox.getChildren().add(kasBox);
-                loadedKasCount++;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        int start = pageIndex * KASSEN_PER_PAGE;
+        int end = Math.min(start + KASSEN_PER_PAGE, allKassen.size());
+
+        for (int i = start; i < end; i++) {
+            Slimmekas kas = allKassen.get(i);
+            HBox kasBox = createKasBox(kas);
+            dataBox.getChildren().add(kasBox);
         }
     }
 
-    private void loadOneSlimmekas() {
-        try {
-            dbase database = new dbase();
-            List<Slimmekas> slimmekasList = database.getSlimmekasData();
+    private void navigateToNextPage() {
+        if ((currentPage + 1) * KASSEN_PER_PAGE < allKassen.size()) {
+            currentPage++;
+            showPage(currentPage);
+        }
+    }
 
-            // Check if the maximum number of kassen per page is reached
-            if (loadedKasCount >= MAX_KASSEN_PER_PAGE) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Limiet Bereikt");
-                alert.setHeaderText("Maximaal aantal kassen bereikt");
-                alert.setContentText("Er kunnen maximaal " + MAX_KASSEN_PER_PAGE + " kassen op deze pagina worden toegevoegd.");
-                alert.showAndWait();
-                return;
-            }
-
-            // Load the next kas if available
-            if (loadedKasCount < slimmekasList.size()) {
-                Slimmekas kas = slimmekasList.get(loadedKasCount);
-                HBox kasBox = createKasBox(kas);
-                dataBox.getChildren().add(kasBox);
-                loadedKasCount++;
-            } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Geen Nieuwe Kassen");
-                alert.setHeaderText("Geen meer beschikbare kassen");
-                alert.setContentText("Alle beschikbare kassen zijn al geladen.");
-                alert.showAndWait();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void navigateToPreviousPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            showPage(currentPage);
         }
     }
 
     private HBox createKasBox(Slimmekas kas) {
-        // Create a new HBox for the Kas with horizontal layout
-        HBox kasBox = new HBox(10); // Add spacing between sections
+        HBox kasBox = new HBox(10);
         kasBox.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-radius: 5px; -fx-border-color: #1ca120; -fx-border-width: 3px;");
-        kasBox.setPrefHeight(100); // Match the example height
-        kasBox.setPrefWidth(500); // Consistent width to match layout
+        kasBox.setPrefHeight(100);
+        kasBox.setPrefWidth(500);
 
-        // Kas ID section on the left
         VBox kasIDBox = createLabelWithIcon("Kas " + kas.getKasID(), "/com/example/app/icons/Kassen2.png", 70, 70);
-
-        // Spacer for layout
         Region spacer1 = new Region();
         spacer1.setPrefWidth(20);
         HBox.setHgrow(spacer1, Priority.NEVER);
 
-        // Pin icon with green background
         VBox pinBox = createPinIconWithBackground(kas);
-
-        // Spacer for layout
         Region spacer2 = new Region();
         spacer2.setPrefWidth(20);
         HBox.setHgrow(spacer2, Priority.NEVER);
 
-        // Icons and data section aligned right
-        HBox iconsAndData = new HBox(20); // Space between icons
+        HBox iconsAndData = new HBox(20);
         iconsAndData.setStyle("-fx-alignment: center-right;");
         iconsAndData.getChildren().addAll(
                 createLabelWithIcon(kas.getTemperatuur() + "°C", "/com/example/app/icons/temperature.png", 50, 50),
@@ -152,70 +169,51 @@ public class KassenPage {
                 createLabelWithIcon(kas.getDagnummer() + "", "/com/example/app/icons/agendaaa2.png", 50, 50)
         );
 
-        // Add everything to the main HBox
         kasBox.getChildren().addAll(kasIDBox, spacer1, pinBox, spacer2, iconsAndData);
-
         return kasBox;
     }
 
     private VBox createPinIconWithBackground(Slimmekas kas) {
         StackPane stackPane = new StackPane();
 
-        // Create the green rectangle as the background
         Rectangle greenBackground = new Rectangle(50, 50);
         greenBackground.setFill(Color.LIGHTGREEN);
-        greenBackground.setArcWidth(10); // Rounded corners
+        greenBackground.setArcWidth(10);
         greenBackground.setArcHeight(10);
 
-        // Create the pin icon
         ImageView pinIcon = new ImageView(new Image(getClass().getResource("/com/example/app/icons/pin.png").toExternalForm()));
         pinIcon.setFitWidth(30);
         pinIcon.setFitHeight(30);
         pinIcon.setPreserveRatio(true);
 
-        // Add the rectangle and icon to the stack
         stackPane.getChildren().addAll(greenBackground, pinIcon);
-
-        // Set click action
         stackPane.setOnMouseClicked(event -> pinKasToHomePage(kas));
 
-        // Wrap in a VBox to maintain consistency with other elements
         VBox pinBox = new VBox(stackPane);
         pinBox.setStyle("-fx-alignment: center;");
-
         return pinBox;
     }
 
     private void pinKasToHomePage(Slimmekas kas) {
         try {
             dbase database = new dbase();
-
-            // Reset alle kassen om ervoor te zorgen dat maar één kas is gepind
             database.resetHomepageKas();
-
-            // Pin de geselecteerde kas (stel Kashomepage = 1)
             database.setKasAsHomepage(kas.getKasID());
 
-            // Update de lokale status
-            selectedKas = kas;
-
-            // Laat een melding zien aan de gebruiker
+            // Show notification for pinning
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Kas Vastgepind");
             alert.setHeaderText(null);
-            alert.setContentText("Kas " + kas.getKasID() + " is vastgepind naar de Homepagina.");
+            alert.setContentText("Kas " + kas.getKasID() + " is vastgepind naar de homepage.");
             alert.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Fout bij het pinnen van de kas.");
         }
     }
 
-    // Method to create a VBox with an icon and label aligned at the center
     private VBox createLabelWithIcon(String labelText, String iconPath, int iconWidth, int iconHeight) {
-        VBox vbox = new VBox(5); // Reduced space between the icon and label
-        vbox.setStyle("-fx-alignment: center;"); // Align content center
-
+        VBox vbox = new VBox(5);
+        vbox.setStyle("-fx-alignment: center;");
         try {
             if (iconPath != null) {
                 Image icon = new Image(getClass().getResource(iconPath).toExternalForm());
@@ -228,13 +226,11 @@ public class KassenPage {
         } catch (NullPointerException e) {
             System.err.println("Icon not found at path: " + iconPath);
         }
-
         if (labelText != null && !labelText.isEmpty()) {
             Label label = new Label(labelText);
             label.setStyle("-fx-font-size: 14px; -fx-font-family: 'Arial';");
             vbox.getChildren().add(label);
         }
-
         return vbox;
     }
 }
