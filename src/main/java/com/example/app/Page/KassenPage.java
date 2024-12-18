@@ -65,6 +65,31 @@ public class KassenPage {
                 allKassen = database.getSlimmekasData();
                 isInitialLoad = false;
                 showPage(currentPage);
+
+                // Check if any kas is pinned. If not, pin the first kas
+                if (allKassen.isEmpty()) {
+                    showDatabaseErrorAlert("Geen kassen gevonden in de database.");
+                    return;
+                }
+
+                boolean isKasPinned = false;
+                for (Slimmekas kas : allKassen) {
+                    if (kas.isHomepage()) {
+                        isKasPinned = true;
+                        break;
+                    }
+                }
+
+                // If no kas is pinned, pin the first kas
+                if (!isKasPinned) {
+                    Slimmekas firstKas = allKassen.get(0);
+                    database.setKasAsHomepage(firstKas.getKasID());
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Kas Vastgepind");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Kas " + firstKas.getKasID() + " is vastgepind naar de homepage.");
+                    alert.showAndWait();
+                }
             } catch (Exception e) { // Catching general exception
                 e.printStackTrace();
                 showDatabaseErrorAlert("Fout bij ophalen van kasgegevens");
@@ -84,6 +109,32 @@ public class KassenPage {
                 database.updateTimestampForLoadedKassen(newKassen); // Update the timestamp for the loaded kassen
                 database.updateKassenIsLoaded(newKassen); // Mark these kassen as loaded in the database
             }
+
+            // Check if any kas is pinned. If not, pin the first kas
+            if (allKassen.isEmpty()) {
+                showDatabaseErrorAlert("Geen kassen gevonden.");
+                return;
+            }
+
+            boolean isKasPinned = false;
+            for (Slimmekas kas : allKassen) {
+                if (kas.isHomepage()) {
+                    isKasPinned = true;
+                    break;
+                }
+            }
+
+            // If no kas is pinned, pin the first kas
+            if (!isKasPinned) {
+                Slimmekas firstKas = allKassen.get(0);
+                database.setKasAsHomepage(firstKas.getKasID());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Kas Vastgepind");
+                alert.setHeaderText(null);
+                alert.setContentText("Kas " + firstKas.getKasID() + " is vastgepind naar de homepage.");
+                alert.showAndWait();
+            }
+
         } catch (Exception e) { // Catching general exception
             e.printStackTrace();
             showDatabaseErrorAlert("Fout bij het laden van nieuwe kassen");
