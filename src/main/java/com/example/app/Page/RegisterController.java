@@ -36,8 +36,8 @@ public class RegisterController {
     private PasswordField confirmPasswordField;
 
     // Databaseverbinding gegevens
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/thechallenge";
-    private static final String DB_USER = "root";
+    private static final String DB_URL = "jdbc:mysql://20.82.121.239:3306/thechallenge";
+    private static final String DB_USER = "Sowadmin";
     private static final String DB_PASSWORD = "root";
 
     /**
@@ -63,7 +63,7 @@ public class RegisterController {
         String hashedPassword = PasswordUtils.hashPassword(password, salt);
 
         // Voeg de gebruiker toe aan de database
-        String query = "INSERT INTO Klant (Username, Email, Wachtwoord, Salt) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO klant (username, email, wachtwoord, salt) VALUES (?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, username);

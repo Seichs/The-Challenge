@@ -26,8 +26,8 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/thechallenge";
-    private static final String DB_USER = "root";
+    private static final String DB_URL = "jdbc:mysql://20.82.121.239:3306/thechallenge";
+    private static final String DB_USER = "Sowadmin";
     private static final String DB_PASSWORD = "root";
 
     /**
@@ -82,7 +82,7 @@ public class LoginController {
      * Valideer de login door het wachtwoord te vergelijken met de database.
      */
     private boolean validateLogin(String username, String password) {
-        String query = "SELECT Wachtwoord, Salt FROM Klant WHERE Username = ?";
+        String query = "SELECT Wachtwoord, Salt FROM klant WHERE Username = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 

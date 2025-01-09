@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class dbase {
-    private static final String URL = "jdbc:mysql://localhost:3306/thechallenge";
-    private static final String USERNAME = "root";
+    private static final String URL = "jdbc:mysql://20.82.121.239:3306/thechallenge";
+    private static final String USERNAME = "Sowadmin";
     private static final String PASSWORD = "root";
 
     // Haal alle kassen op
