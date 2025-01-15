@@ -57,6 +57,12 @@ public class RegisterController {
             return;
         }
 
+        // Controleer of het wachtwoord voldoet aan de minimale lengte
+        if (!isPasswordValid(password)) {
+            showAlert("Fout", "Het wachtwoord moet minimaal 8 tekens lang zijn.", Alert.AlertType.ERROR);
+            return;
+        }
+
         // Genereer een salt voor de gebruiker
         String salt = PasswordUtils.generateSalt();
         // Hash het wachtwoord met de gegenereerde salt
@@ -79,6 +85,13 @@ public class RegisterController {
 
         // Wissel naar het inlogscherm na succesvolle registratie
         switchToLogin();
+    }
+
+    /**
+     * Controleer of het wachtwoord minimaal 8 tekens lang is.
+     */
+    private boolean isPasswordValid(String password) {
+        return password != null && password.length() >= 8;
     }
 
     /**

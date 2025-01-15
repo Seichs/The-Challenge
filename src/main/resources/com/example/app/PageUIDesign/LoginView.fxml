@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="620.0" prefWidth="424.0" style="-fx-background-color: linear-gradient(to bottom, #A9FF82, #86FF4F);" stylesheets="file:/C:/Users/cdele/IdeaProjects/The-Challenge-main/src/main/resources/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.Page.LoginController">
+<BorderPane prefHeight="620.0" prefWidth="424.0" style="-fx-background-color: linear-gradient(to bottom, #A9FF82, #86FF4F);" stylesheets="file:/C:/Users/cdele/IdeaProjects/The-Challenge/src/main/resources/css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.Page.LoginController">
     <center>
         <!-- Set fx:id for animation -->
         <VBox fx:id="rootPane" alignment="CENTER" spacing="20" style="-fx-background-color: transparent;">
