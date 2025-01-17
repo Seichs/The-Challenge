@@ -2,14 +2,16 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane prefHeight="620.0" prefWidth="424.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.Page.OverpottenPage">
+<Pane prefHeight="620.0" prefWidth="424.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.Page.OverpottenPage">
     <children>
         <Pane prefHeight="105.0" prefWidth="424.0" style="-fx-background-color: #A9FF82;">
             <children>
-                <Label alignment="CENTER" layoutX="116.0" layoutY="15.0" prefHeight="74.0" prefWidth="192.0" text="Kassen" textAlignment="CENTER" textFill="WHITE">
+                <Label alignment="CENTER" layoutX="52.0" layoutY="15.0" prefHeight="75.0" prefWidth="319.0" text="Overpotten" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="52.0" />
                     </font>
@@ -18,5 +20,12 @@
             </children>
         </Pane>
       <Button fx:id="goBackButton" layoutX="24.0" layoutY="550.0" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 18;" text="←" />
+      <Pane layoutX="48.0" layoutY="138.0" prefHeight="239.0" prefWidth="6.0" style="-fx-background-color: #267F00;" />
+      <Text fill="#267f00" layoutX="59.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Overpotten" wrappingWidth="282.93670654296875">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Text>
+      <TextArea editable="false" layoutX="55.0" layoutY="164.0" prefHeight="213.0" prefWidth="363.0" text="Overpotten is belangrijk wanneer een plant uit zijn pot groeit.&#10;Kies een nieuwe pot die 2-3 cm groter is dan de oude&#10;en vul deze met verse, voedzame aarde.&#10;Haal de plant voorzichtig uit de oude pot, zodat je de wortels&#10;niet beschadigt.&#10;Controleer de wortels en knip dode of rotte delen weg.&#10;Zet de plant in de nieuwe pot en vul aan met aarde.&#10;Druk de grond licht aan en geef meteen water.&#10;Plaats de plant daarna op een geschikte plek,&#10;afhankelijk van de licht- en warmtebehoefte van de plant.&#10;Dit helpt hem om zich sneller aan te passen aan zijn nieuwe huis! " />
     </children>
 </Pane>
